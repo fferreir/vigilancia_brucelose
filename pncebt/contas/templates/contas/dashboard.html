@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+    <div class="container pt-5"  >
+    <h1>Dashboard</h1>
+    Bem vindo ao seu dashboard. Você pode <a href="{% url "edit" %}">editar seu perfil</a> ou <a href="{% url "password_change" %}">mudar sua senha</a>.
+{% endblock %}
