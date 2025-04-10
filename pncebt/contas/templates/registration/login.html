@@ -3,6 +3,14 @@
 {% block title %}Log-in{% endblock %}
 {% block content %}
     <div class="container mt-5 pt-5"  style="width: 400px">
+    <h1>Log-in</h1>
+    {% if form.errors %}
+        <p>
+            Seu usuário e senha não conferem. Por favor, tente novamente.
+        </p>
+    {% else %}
+        <p>Por favor, preencha seu usuário e senha:</p>
+    {% endif %}
         <form action="{% url 'login' %}" method="post">
             {% csrf_token %}
             {% bootstrap_form form %}
