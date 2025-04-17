@@ -7,13 +7,13 @@ from django.contrib import messages
 from django.contrib.auth.models import Group, User
 from rest_framework import permissions, viewsets
 
-from contas.serializers import GroupSerializer, UserSerializer
+from conta.serializers import GroupSerializer, UserSerializer
 
 @login_required
 def dashboard(request):
     return render(
         request,
-        'contas/dashboard.html',
+        'conta/dashboard.html',
         {'section': 'dashboard'}
     )
 
@@ -36,7 +36,7 @@ def editar(request):
         user_form = UserEditForm(instance=request.user)
     return render(
             request,
-            'contas/edit.html',
+            'conta/edit.html',
             {
                 'user_form': user_form,
             }
