@@ -1,0 +1,33 @@
+<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">PNCEBT</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor01" style="">
+      <ul class="navbar-nav me-auto">
+        
+        {% if user.is_authenticated %}
+
+        <li class="nav-item">
+          <a class="nav-link" href="/conta/">Dashboard
+          <span class="visually-hidden">(current)</span>
+          </a>
+        </li>
+
+      </ul>
+        <form class="d-flex" action="{% url "logout" %}" method="post">
+            <ul class="navbar-nav me-auto">
+            <li class="nav-item"> <a class="nav-link"> Olá {{ request.user.first_name|default:request.user.username }}, {{ request.user.conta.estado|default:request.user.conta.estado }} </a></li>
+            </ul>
+            <button type="submit" class="btn btn-dark my-2 my-sm-0">Logout</button>
+            {% csrf_token %}
+        </form>
+        </div>
+        </li>
+
+        {% endif %}
+
+    </div>
+  </div>
+</nav>
