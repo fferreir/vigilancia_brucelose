@@ -18,7 +18,7 @@
       </ul>
         <form class="d-flex" action="{% url "logout" %}" method="post">
             <ul class="navbar-nav me-auto">
-            <li class="nav-item"> <a class="nav-link"> Olá {{ request.user.first_name|default:request.user.username }}, {{ request.user.conta.estado|default:request.user.conta.estado }} </a></li>
+            <li class="nav-item "> <a class="nav-link"> Olá {{ request.user.first_name|default:request.user.username }} ({{ request.user.perfil.estado|default:request.user.perfil.estado }}) </a></li>
             </ul>
             <button type="submit" class="btn btn-dark my-2 my-sm-0">Logout</button>
             {% csrf_token %}

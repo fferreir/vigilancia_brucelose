@@ -1,8 +1,9 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import User
 
-class Conta(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+class Perfil(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     telefone = models.CharField(max_length=11)
     estado = models.CharField(
         max_length=2,
@@ -42,4 +43,4 @@ class Conta(models.Model):
     )
 
 def __str__(self):
-        return self.user.username
+        return f'Profile of {self.user.username}'
