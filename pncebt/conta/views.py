@@ -31,10 +31,10 @@ def editar(request):
             perfil_form.save()
             messages.success(
                 request,
-                'Perfil atualizado com sucesso'
+                'Perfil atualizado com sucesso!'
             )
         else:
-            messages.error(request, 'Erro ao atualizar o perfil')
+            messages.error(request, 'Erro ao atualizar o perfil!')
     else:
         user_form = UserEditForm(instance=request.user)
         perfil_form = PerfilEditForm(instance=request.user.perfil)

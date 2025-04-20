@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% load django_bootstrap5 %}
-{% block title %}Edite sua conta{% endblock %}
+{% block title %}Edite seu perfil{% endblock %}
 {% block content %}
     <div class="container pt-5" style="width: 400px" >
-        <h1>Edite sua conta</h1>
+        <h1>Edite seu perfil</h1>
         <form method="post" >
             {% bootstrap_form user_form %}
             {% bootstrap_form perfil_form %}
