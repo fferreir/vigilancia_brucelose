@@ -6,6 +6,7 @@
         <h1>Edite sua conta</h1>
         <form method="post" >
             {% bootstrap_form user_form %}
+            {% bootstrap_form perfil_form %}
             {% csrf_token %}
             {% bootstrap_button button_type="submit" content="Salvar" %}
         </form>

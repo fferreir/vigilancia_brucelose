@@ -1,8 +1,6 @@
-from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required, permission_required
-from django.http import HttpResponse
 from django.shortcuts import render
-from .forms import UserEditForm
+from .forms import UserEditForm, PerfilEditForm
 from django.contrib import messages
 from django.contrib.auth.models import Group, User
 from rest_framework import permissions, viewsets
@@ -24,8 +22,13 @@ def editar(request):
             instance=request.user,
             data=request.POST
         )
-        if user_form.is_valid() :
+        perfil_form = PerfilEditForm(
+            instance=request.user.perfil,
+            data=request.POST
+        )
+        if user_form.is_valid() and perfil_form.is_valid():
             user_form.save()
+            perfil_form.save()
             messages.success(
                 request,
                 'Perfil atualizado com sucesso'
@@ -34,11 +37,13 @@ def editar(request):
             messages.error(request, 'Erro ao atualizar o perfil')
     else:
         user_form = UserEditForm(instance=request.user)
+        perfil_form = PerfilEditForm(instance=request.user.perfil)
     return render(
             request,
-            'conta/edit.html',
+            'conta/editar.html',
             {
                 'user_form': user_form,
+                'perfil_form': perfil_form,
             }
         )
 
