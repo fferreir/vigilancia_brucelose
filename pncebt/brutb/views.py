@@ -1,11 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .forms import Propriedade
+
+@login_required
 def home(request):
 
     return render(request, 'brutb/index.html')
 
-
+@login_required
 def propriedade_view(request):
     if request.method == 'POST':
         form = Propriedade(request.POST, user=request.user)
@@ -13,6 +15,6 @@ def propriedade_view(request):
             # Processa os dados aqui
             pass
     else:
-        form = Prorpriedade(user=request.user)
+        form = Propriedade(user=request.user)
 
-    return render(request, 'propriedade.html', {'form': form})
+    return render(request, 'brutb/propriedade.html', {'form': form})
