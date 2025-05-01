@@ -27,6 +27,6 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('admin/', admin.site.urls),
-    path('', include('brutb.urls')),
+    path('', include('conta.urls')),
     path("conta/", include("conta.urls")),
 ]
