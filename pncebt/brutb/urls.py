@@ -3,5 +3,5 @@ from . import views
 
 urlpatterns = [
     path('brutb', views.home, name=''),
-    path('brutb/propriedade', views.propriedade_view, name='propriedade'),
+    path('propriedade', views.propriedade, name='propriedade'),
 ]

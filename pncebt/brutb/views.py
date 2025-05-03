@@ -9,7 +9,7 @@ def home(request):
     return render(request, 'brutb/index.html')
 
 @login_required
-def propriedade_view(request):
+def propriedade(request):
     if request.method == 'POST':
         form = Propriedade(request.POST, user=request.user)
         if form.is_valid():

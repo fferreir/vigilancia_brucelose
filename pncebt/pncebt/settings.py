@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'django_bootstrap5',
     'django.contrib.gis',
     'rest_framework',
-    'brutb',
+    'brutb.apps.BrutbConfig',
 ]
 
 MIDDLEWARE = [
