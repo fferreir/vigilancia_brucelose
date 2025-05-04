@@ -8,14 +8,19 @@ class Brasil(models.Model):
     nm_mun = models.CharField(max_length=100)
     cd_uf = models.CharField(max_length=2)
     nm_uf = models.CharField(max_length=50)
-
-    # GeoDjango-specific: a geometry field (MultiPolygonField)
+    sigla_uf = models.CharField(max_length=2)
     geom = models.MultiPolygonField(srid=4674)
+
+    class Meta:
+        ordering = ['cd_uf', 'nm_mun']
+        indexes = [
+            models.Index(fields=['cd_uf', 'nm_mun']),
+        ]
 
     def __str__(self):
         return self.nm_mun
 
-class Propriedades(models.Model):
+class Propriedade(models.Model):
     # Fields corresponding to the attributes in the questionary
     municipio = models.ForeignKey(Brasil, on_delete=models.PROTECT)
     veterinario = models.ForeignKey(

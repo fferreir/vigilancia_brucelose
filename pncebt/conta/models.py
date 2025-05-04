@@ -1,4 +1,3 @@
-#from django.db import models
 from django.contrib.gis.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -47,4 +46,4 @@ class Perfil(models.Model):
     )
 
     def __str__(self):
-        return f'Profile of {self.user.username}'
+        return f'{self.user.username}'
