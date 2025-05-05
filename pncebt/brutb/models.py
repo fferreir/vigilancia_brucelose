@@ -21,15 +21,6 @@ class Brasil(models.Model):
     def __str__(self):
         return self.nm_mun
 
-class PropriedadeManager(models.Manager):
-    def para_estado_usuario(self, user):
-        if not user.is_authenticated or not hasattr(user, 'perfil') or not user.perfil.estado:
-            return self.none()
-
-        estado_do_usuario = user.perfil.estado
-
-        return self.filter(municipio__cd_uf=estado_do_usuario)
-
 class Propriedade(models.Model):
     # Fields corresponding to the attributes in the questionary
     estado = models.CharField(max_length=2)
@@ -41,8 +32,6 @@ class Propriedade(models.Model):
     )
     criado = models.DateTimeField(auto_now_add=True)
     atualizado = models.DateTimeField(auto_now=True)
-
-    objects = PropriedadeManager()
 
     class Meta:
         ordering = ['municipio']

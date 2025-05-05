@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 from .forms import Propriedade
 from .models import Propriedade
@@ -22,11 +22,20 @@ def propriedade(request):
     return render(request, 'brutb/propriedade.html', {'form': form})
 
 @login_required
-def propriedades_registradas_por_estado(request):
+def lista_propriedades(request):
 
-    registros_do_estado = Propriedade.objects.para_estado_usuario(request.user)
+    propriedades = Propriedade.objects.filter(estado = request.user.perfil.estado)
 
-    context = {
-        'registros_do_estado': registros_do_estado,
-    }
-    return render(request, 'brutb/propriedades_registradas.html', context)
+    return render(request, 'brutb/propriedade/lista.html', {'propriedades': propriedades})
+
+
+def detalhe_propriedade(request, id):
+    try:
+        propriedade = get_object_or_404( Propriedade, munic)
+    except Propriedade.DoesNotExist:
+        raise Http404("Propriedade não encontrada.")
+    return render(
+        request,
+        'brutb/propriedade/detalhe.html',
+        {'propriedade': propriedade}
+    )
