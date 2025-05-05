@@ -1,10 +1,11 @@
 from django.contrib.gis.db import models
 from django.conf import settings
+from conta.models import Perfil
 
 class Brasil(models.Model):
     # Regular Django fields corresponding to the attributes in the
     # Brazil's shapefile.
-    cd_mun = models.CharField(max_length=7)
+    cd_mun = models.CharField(max_length=7, primary_key=True)
     nm_mun = models.CharField(max_length=100)
     cd_uf = models.CharField(max_length=2)
     nm_uf = models.CharField(max_length=50)
@@ -20,8 +21,18 @@ class Brasil(models.Model):
     def __str__(self):
         return self.nm_mun
 
+class PropriedadeManager(models.Manager):
+    def para_estado_usuario(self, user):
+        if not user.is_authenticated or not hasattr(user, 'perfil') or not user.perfil.estado:
+            return self.none()
+
+        estado_do_usuario = user.perfil.estado
+
+        return self.filter(municipio__cd_uf=estado_do_usuario)
+
 class Propriedade(models.Model):
     # Fields corresponding to the attributes in the questionary
+    estado = models.CharField(max_length=2)
     municipio = models.ForeignKey(Brasil, on_delete=models.PROTECT)
     veterinario = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -30,7 +41,15 @@ class Propriedade(models.Model):
     )
     criado = models.DateTimeField(auto_now_add=True)
     atualizado = models.DateTimeField(auto_now=True)
-    # Returns the string representation of the model.
+
+    objects = PropriedadeManager()
+
+    class Meta:
+        ordering = ['municipio']
+        indexes = [
+            models.Index(fields=['municipio']),
+        ]
+
     def __str__(self):
         return self.municipio
 

@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponse
 from .forms import Propriedade
+from .models import Propriedade
 
 @login_required
 def home(request):
@@ -19,3 +20,13 @@ def propriedade(request):
         form = Propriedade(user=request.user)
 
     return render(request, 'brutb/propriedade.html', {'form': form})
+
+@login_required
+def propriedades_registradas_por_estado(request):
+
+    registros_do_estado = Propriedade.objects.para_estado_usuario(request.user)
+
+    context = {
+        'registros_do_estado': registros_do_estado,
+    }
+    return render(request, 'brutb/propriedades_registradas.html', context)

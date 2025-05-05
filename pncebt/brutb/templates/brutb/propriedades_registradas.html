@@ -1,0 +1,34 @@
+{% extends 'base.html' %} {# Opcional: se você usar um template base #}
+
+{% block title %}Registros do Seu Estado{% endblock %} {# Bloco de título #}
+
+{% block content %} {# Bloco de conteúdo #}
+
+<h1>Registros {{ user.perfil.estado }} </h1>
+
+{% if registros %}
+    <p>Total de registros encontrados: {{ registros|length }}</p> {# Exibe a quantidade de registros #}
+
+    <ul> {# Usamos uma lista não ordenada para exibir os registros #}
+        {% for registro in registros %}
+            <li>
+                {# Exibe informações do registro #}
+                <p><strong>ID do Registro:</strong> {{ registro.id }}</p> {# Opcional: mostrar o ID #}
+                <p><strong>Criado por:</strong> {{ registro.creator.username }}</p> {# Exibe o username do criador #}
+                <p><strong>Data/Hora de Criação:</strong> {{ registro.created_at }}</p>
+
+                {# Exibe o campo 'data', aplicando um filtro para quebrar linhas #}
+                <p><strong>Conteúdo:</strong></p>
+                <div>{{ registro.data|linebreaksbr }}</div>
+
+                <hr> {# Linha horizontal para separar os registros #}
+            </li>
+        {% endfor %}
+    </ul>
+
+{% else %}
+    {# Mensagem exibida se a lista de registros estiver vazia #}
+    <p>Nenhum registro encontrado para o seu estado.</p>
+{% endif %}
+
+{% endblock %} {# Fim do bloco de conteúdo #}
