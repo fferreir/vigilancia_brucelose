@@ -1,7 +1,6 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
-from .forms import Propriedade
 from .models import Propriedade
 
 @login_required
@@ -12,21 +11,23 @@ def home(request):
 @login_required
 def propriedade(request):
     if request.method == 'POST':
-        form = Propriedade(request.POST, user=request.user)
+        form = Propriedade(request.POST)
         if form.is_valid():
             # Processa os dados aqui
             pass
     else:
-        form = Propriedade(user=request.user)
+        form = Propriedade()
 
-    return render(request, 'brutb/propriedade.html', {'form': form})
+    return render(request, 'brutb/propriedade.html', {'post': post,
+                                                      'form': form})
 
-@login_required
-def propriedades_registradas_por_estado(request):
+def lista_propriedades(request):
+    # Obtém todas as propriedades
+    propriedades = Propriedade.objects.all()
+    return render(request, 'brutb/propriedade/lista.html', {'propriedades': propriedades})
 
-    registros_do_estado = Propriedade.objects.para_estado_usuario(request.user)
+def propriedade_detalhe(request, pk):
+    # Obtém uma propriedade específica
+    propriedade = get_object_or_404(Propriedade, pk=pk)
+    return render(request, 'brutb/propriedade/detalhe.html', {'propriedade': propriedade})
 
-    context = {
-        'registros_do_estado': registros_do_estado,
-    }
-    return render(request, 'brutb/propriedades_registradas.html', context)

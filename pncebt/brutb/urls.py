@@ -1,8 +1,9 @@
 from django.urls import include,path
 from . import views
 
+app_name = 'brutb'
 urlpatterns = [
-    path('', views.home, name=''),
+    path('index', views.home, name='index'),
+    path('', views.lista_propriedades, name='lista_propriedades'),
     path('propriedade', views.propriedade, name='propriedade'),
-    path('propriedades_registradas', views.propriedades_registradas_por_estado, name='propriedades_registradas'),
 ]
