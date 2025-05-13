@@ -6,20 +6,20 @@
 
 <h1>Registros {{ user.perfil.estado }} </h1>
 
-{% if registros %}
-    <p>Total de registros encontrados: {{ registros|length }}</p> {# Exibe a quantidade de registros #}
+{% if propriedades %}
+    <p>Total de registros encontrados: {{ propriedades|length }}</p> {# Exibe a quantidade de registros #}
 
     <ul> {# Usamos uma lista não ordenada para exibir os registros #}
-        {% for registro in registros %}
+        {% for propriedade in propriedades %}
             <li>
                 {# Exibe informações do registro #}
-                <p><strong>ID do Registro:</strong> {{ registro.id }}</p> {# Opcional: mostrar o ID #}
-                <p><strong>Criado por:</strong> {{ registro.creator.username }}</p> {# Exibe o username do criador #}
-                <p><strong>Data/Hora de Criação:</strong> {{ registro.created_at }}</p>
+                <p><strong>ID do Registro:</strong> {{ propriedade.id }}</p> {# Opcional: mostrar o ID #}
+                <p><strong>Criado por:</strong> {{ propriedade.veterinario.get_full_name|default:propriedade.veterinario.username }}</p> {# Exibe o username do criador #}
+                <p><strong>Data/Hora de Criação:</strong> {{ propriedade.criado }}</p>
 
                 {# Exibe o campo 'data', aplicando um filtro para quebrar linhas #}
                 <p><strong>Conteúdo:</strong></p>
-                <div>{{ registro.data|linebreaksbr }}</div>
+                <div>{{ propriedade.data|linebreaksbr }}</div>
 
                 <hr> {# Linha horizontal para separar os registros #}
             </li>

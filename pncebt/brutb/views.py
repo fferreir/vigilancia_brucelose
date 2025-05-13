@@ -21,11 +21,13 @@ def propriedade(request):
     return render(request, 'brutb/propriedade.html', {'post': post,
                                                       'form': form})
 
+@login_required
 def lista_propriedades(request):
     # Obtém todas as propriedades
-    propriedades = Propriedade.objects.all()
+    propriedades = Propriedade.objects.select_related('veterinario').filter(estado=request.user.perfil.estado)
     return render(request, 'brutb/propriedade/lista.html', {'propriedades': propriedades})
 
+@login_required
 def propriedade_detalhe(request, pk):
     # Obtém uma propriedade específica
     propriedade = get_object_or_404(Propriedade, pk=pk)
