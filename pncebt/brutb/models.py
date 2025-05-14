@@ -31,9 +31,9 @@ class Propriedade(models.Model):
 
     class Criacao(models.TextChoices):
         NR = '0', 'Não respondeu'
-        CORTE = '1', 'Extensivo'
-        LEITE = '2', 'Semi-confinado'
-        MISTO = '3', 'Confinado'
+        EXTENSIVO = '1', 'Extensivo'
+        SEMICONFINADO = '2', 'Semi-confinado'
+        CONFINADO = '3', 'Confinado'
 
     class Ordenha(models.TextChoices):
         NR = '0', 'Não respondeu'
@@ -87,7 +87,7 @@ class Propriedade(models.Model):
     class SimNao(models.TextChoices):
         NAO = '0', 'Não'
         SIM = '1', 'Sim'
-        NR = '3', 'Não respondeu'
+        NR = '3', 'Não respondeu/Não sabe'
 
     class RegBru(models.TextChoices):
         UMAVEZ = '0', 'Uma vez ao ano'
@@ -109,6 +109,12 @@ class Propriedade(models.Model):
         B19_RB51 = '1', 'Com B19 ou RB51'
         RB51 = '2', 'Só com RB51'
         NAO_SABE = '3', 'Não sabe a vacina'
+
+    class Classificacao(models.TextChoices):
+        RURAL = '0', 'Rural clássica'
+        ALDEIA = '1', 'Aldeia indígena'
+        ASSENTAMENTO = '2', 'Assentamento'
+        PERIFERIA = '3', 'Periferia urbana'
 
     municipio = models.ForeignKey(Municipio, on_delete=models.PROTECT)
     regiao = models.PositiveSmallIntegerField(max_length=2)
@@ -283,7 +289,98 @@ class Propriedade(models.Model):
         choices=SimNao,
         default=SimNao.NR
     )
-
+    compartilha_insumos =  models.BooleanField(default=False)
+    compartilha_equipamentos = models.BooleanField(default=False)
+    compartilha_funcionarios = models.BooleanField(default=False)
+    acesso_areas_alagadas = models.PositiveSmallIntegerField(
+        max_length=1,
+        choices=SimNao,
+        default=SimNao.NR
+    )
+    gado_concentrado = models.PositiveSmallIntegerField(
+        max_length=1,
+        choices=SimNao,
+    )
+    palafita = models.BooleanField(default=False)
+    concentrado_outra = models.BooleanField(default=False)
+    concentrado_outra_qual = models.TextField(blank=True, max_length=400)
+    piquete_parto = models.SmallIntegerField(
+        max_length=1,
+        choices=SimNao,
+        default=SimNao.NR
+    )
+    entrega_leite = models.SmallIntegerField(
+        max_length=1,
+        choices=SimNao,
+        default=SimNao.NR
+    )
+    entrega_cooperativa = models.BooleanField(default=False)
+    entrega_laticinio = models.BooleanField(default=False)
+    entrega_consumidor = models.BooleanField(default=False)
+    resfria_leite = models.SmallIntegerField(
+        max_length=1,
+        choices=SimNao,
+        default=SimNao.NR
+    )
+    resfria_tanque_proprio = models.BooleanField(default=False)
+    resfria_tanque_coletivo = models.BooleanField(default=False)
+    entrega_leite_granel = models.SmallIntegerField(
+        max_length=1,
+        choices=SimNao,
+        default=SimNao.NR
+    )
+    produz_queijo_manteiga = models.SmallIntegerField(
+        max_length=1,
+        choices=SimNao,
+        default=SimNao.NR
+    )
+    queijo_manteiga_consumo_proprio = models.BooleanField(default=False)
+    queijo_manteiga_venda = models.BooleanField(default=False)
+    consome_leite_cru = models.SmallIntegerField(
+        max_length=1,
+        choices=SimNao,
+        default=SimNao.NR
+    )
+    assistencia_veterinaria = models.SmallIntegerField(
+        max_length=1,
+        choices=SimNao,
+    )
+    veterinario_cooperativa = models.BooleanField(default=False)
+    veterinario_privado = models.BooleanField(default=False)
+    alimenta_soro_leite = models.SmallIntegerField(
+        max_length=1,
+        choices=SimNao,
+        default=SimNao.NR
+    )
+    bov_bub_comprados_12meses = models.PositiveSmallIntegerField(max_length=6)
+    num_faz_comprados_12meses = models.PositiveSmallIntegerField(max_length=6)
+    bov_bub_vendidos_12meses = models.PositiveSmallIntegerField(max_length=6)
+    num_faz_vendidos_12meses = models.PositiveSmallIntegerField(max_length=6)
+    compartilha_aguada = models.SmallIntegerField(
+        max_length=1,
+        choices=SimNao,
+        default=SimNao.NR
+    )
+    pouso_boiada_transito = models.SmallIntegerField(
+        max_length=1,
+        choices=SimNao,
+        default=SimNao.NR
+    )
+    vacina_brucelose_adeq_conservada = models.SmallIntegerField(
+        max_length=1,
+        choices=SimNao,
+        default=SimNao.NR
+    )
+    vacina_brucelose_adeq_aplicada = models.SmallIntegerField(
+        max_length=1,
+        choices=SimNao,
+        default=SimNao.NR
+    )
+    classificacao_propriedade = models.PositiveSmallIntegerField(
+        max_length=1,
+        choices=Classificacao,
+        default=Classificacao.NR
+    )
     veterinario = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.PROTECT,
