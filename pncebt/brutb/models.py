@@ -1,4 +1,5 @@
 from django.contrib.gis.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.conf import settings
 from conta.models import Perfil
 
@@ -115,76 +116,72 @@ class Propriedade(models.Model):
         ALDEIA = '1', 'Aldeia indígena'
         ASSENTAMENTO = '2', 'Assentamento'
         PERIFERIA = '3', 'Periferia urbana'
+        NR = '4', 'Não respondeu'
 
     municipio = models.ForeignKey(Municipio, on_delete=models.PROTECT)
-    regiao = models.PositiveSmallIntegerField(max_length=2)
+    regiao = models.PositiveSmallIntegerField()
     estado = models.CharField(max_length=2)
     proprietario = models.CharField(max_length=200)
     propriedade = models.CharField(max_length=200)
     cod_cadastro_defesa = models.CharField(max_length=40)
     data_inoculacao = models.DateField()
     data_leitura = models.DateField()
-    cod_rebanho_estudo = models.PositiveBigIntegerField(min_value=1100015001, max_value=5300108500, unique=True)
-    latitude_grau = models.IntegerField(max_value=5, min_value=-33)
-    latitude_min = models.IntegerField(max_value=59, min_value=0)
-    latitude_seg = models.DecimalField(max_digits=3, decimal_places=1, max_value=59.9, min_value=0.0)
-    longitude_grau = models.IntegerField(max_value=-34, min_value=-73)
-    longitude_min = models.IntegerField(max_value=59, min_value=0)
-    longitude_seg = models.DecimalField(max_digits=3, decimal_places=1, max_value=59.9, min_value=0.0)
+    cod_rebanho_estudo = models.PositiveBigIntegerField(
+        validators=[MinValueValidator(1100015001), MaxValueValidator(5300108500)], unique=True
+    )
+    latitude_grau = models.IntegerField(validators=[MinValueValidator(-33), MaxValueValidator(5)])
+    latitude_min = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(59)])
+    latitude_seg = models.DecimalField(validators=[MinValueValidator(0.0), MaxValueValidator(59.9)], max_digits=3, decimal_places=1)
+    longitude_grau = models.IntegerField(validators=[MinValueValidator(-73), MaxValueValidator(-34)])
+    longitude_min = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(59)])
+    longitude_seg = models.DecimalField(validators=[MinValueValidator(0.0), MaxValueValidator(59.9)], max_digits=3, decimal_places=1)
     tipo_exploracao = models.PositiveSmallIntegerField(
-        max_length=1,
         choices=Exploracao,
         default=Exploracao.NR)
     tipo_criacao = models.PositiveSmallIntegerField(
-        max_length=1,
         choices=Criacao,
         default=Criacao.NR
     )
     numero_ordenhas = models.PositiveSmallIntegerField(
-        max_length=1,
         choices=Ordenha,
         default=Ordenha.NR
     )
     tipo_ordenha = models.PositiveSmallIntegerField(
-        max_length=1,
         choices=TipoOrdenha,
         default=TipoOrdenha.NR
     )
-    vacas_lactacao = models.PositiveSmallIntegerField(max_length=6)
-    producao_leite = models.PositiveSmallIntegerField(max_length=6)
+    vacas_lactacao = models.PositiveSmallIntegerField()
+    producao_leite = models.PositiveSmallIntegerField()
     usa_inseminacao = models.PositiveSmallIntegerField(
-        max_length=1,
         choices=Inseminacao,
         default=Inseminacao.NR
     )
     raca_bovino = models.PositiveSmallIntegerField(
-        max_length=1,
         choices=Bovino,
         default=Bovino.NR
     )
     raca_bubalino = models.PositiveSmallIntegerField(
-        max_length=1,
         choices=Bubalino,
         default=Bubalino.NR
     )
-    bov_macho_castrado = models.PositiveSmallIntegerField(max_length=6, default=0)
-    bov_macho_0_6 = models.PositiveSmallIntegerField(max_length=6, default=0)
-    bov_macho_7_12 = models.PositiveSmallIntegerField(max_length=6, default=0)
-    bov_macho_13_24 = models.PositiveSmallIntegerField(max_length=6, default=0)
-    bov_macho_25_mais = models.PositiveSmallIntegerField(max_length=6, default=0)
-    bov_femea_0_6 = models.PositiveSmallIntegerField(max_length=6, default=0)
-    bov_femea_7_12 = models.PositiveSmallIntegerField(max_length=6, default=0)
-    bov_femea_13_24 = models.PositiveSmallIntegerField(max_length=6, default=0)
-    bov_femea_25_mais = models.PositiveSmallIntegerField(max_length=6, default=0)
-    bub_macho_castrado = models.PositiveSmallIntegerField(max_length=6, default=0)
-    bub_macho_0_6 = models.PositiveSmallIntegerField(max_length=6, default=0)
-    bub_macho_7_12 = models.PositiveSmallIntegerField(max_length=6, default=0)
-    bub_macho_13_24 = models.PositiveSmallIntegerField(max_length=6, default=0)
-    bub_macho_25_mais = models.PositiveSmallIntegerField(max_length=6, default=0)
-    bub_femea_0_6 = models.PositiveSmallIntegerField(max_length=6, default=0)
-    bub_femea_7_12 = models.PositiveSmallIntegerField(max_length=6, default=0)
-    bub_femea_13_24 = models.PositiveSmallIntegerField(max_length=6, default=0)
-    bub_femea_25_mais = models.PositiveSmallIntegerField(max_length=6, default=0)
+    bov_macho_castrado = models.PositiveSmallIntegerField(default=0)
+    bov_macho_0_6 = models.PositiveSmallIntegerField(default=0)
+    bov_macho_7_12 = models.PositiveSmallIntegerField(default=0)
+    bov_macho_13_24 = models.PositiveSmallIntegerField( default=0)
+    bov_macho_25_mais = models.PositiveSmallIntegerField(default=0)
+    bov_femea_0_6 = models.PositiveSmallIntegerField(default=0)
+    bov_femea_7_12 = models.PositiveSmallIntegerField(default=0)
+    bov_femea_13_24 = models.PositiveSmallIntegerField(default=0)
+    bov_femea_25_mais = models.PositiveSmallIntegerField(default=0)
+    bub_macho_castrado = models.PositiveSmallIntegerField(default=0)
+    bub_macho_0_6 = models.PositiveSmallIntegerField(default=0)
+    bub_macho_7_12 = models.PositiveSmallIntegerField(default=0)
+    bub_macho_13_24 = models.PositiveSmallIntegerField(default=0)
+    bub_macho_25_mais = models.PositiveSmallIntegerField(default=0)
+    bub_femea_0_6 = models.PositiveSmallIntegerField(default=0)
+    bub_femea_7_12 = models.PositiveSmallIntegerField(default=0)
+    bub_femea_13_24 = models.PositiveSmallIntegerField(default=0)
+    bub_femea_25_mais = models.PositiveSmallIntegerField(default=0)
     ovi_capri = models.BooleanField(default=False)
     equideos = models.BooleanField(default=False)
     suinos = models.BooleanField(default=False)
@@ -199,37 +196,30 @@ class Propriedade(models.Model):
     macacos = models.BooleanField(default=False)
     outro_silvestre = models.TextField(blank=True, max_length=400)
     aborto_ano = models.PositiveSmallIntegerField(
-        max_length=1,
         choices=Aborto,
         default=Aborto.NR
     )
     destino_feto = models.PositiveSmallIntegerField(
-        max_length=1,
         choices=Feto,
         default=Feto.NR
     )
     testa_brucelose = models.PositiveSmallIntegerField(
-        max_length=1,
         choices=SimNao,
         default=SimNao.NR
     )
     regularidade_brucelose = models.PositiveSmallIntegerField(
-        max_length=1,
         choices=RegBru,
         default=RegBru.NR
     )
     testa_tuberculose = models.PositiveSmallIntegerField(
-        max_length=1,
         choices=SimNao,
         default=SimNao.NR
     )
     regularidade_tuberculose = models.PositiveSmallIntegerField(
-        max_length=1,
         choices=RegTB,
         default=RegTB.NR
     )
     introducao_bov_bub = models.PositiveSmallIntegerField(
-        max_length=1,
         choices=SimNao,
         default=SimNao.NR
     )
@@ -238,7 +228,6 @@ class Propriedade(models.Model):
     introducao_comercio = models.BooleanField(default=False)
     introducao_outra_fazenda = models.BooleanField(default=False)
     introducao_reprodutores = models.PositiveSmallIntegerField(
-        max_length=1,
         choices=SimNao,
         default=SimNao.NR
     )
@@ -247,7 +236,6 @@ class Propriedade(models.Model):
     reprodutores_comercio = models.BooleanField(default=False)
     reprodutores_outra_fazenda = models.BooleanField(default=False)
     venda_reprodutores = models.PositiveSmallIntegerField(
-        max_length=1,
         choices=SimNao,
         default=SimNao.NR
     )
@@ -256,17 +244,14 @@ class Propriedade(models.Model):
     venda_reprodutores_comercio = models.BooleanField(default=False)
     venda_reprodutores_outra_fazenda = models.BooleanField(default=False)
     vacina_brucelose = models.PositiveSmallIntegerField(
-        max_length=1,
         choices=SimNao,
         default=SimNao.NR
     )
     tipo_vacina_brucelose = models.PositiveSmallIntegerField(
-        max_length=1,
         choices=TipoVacina,
         default=TipoVacina.NAO_SABE
     )
     abate = models.PositiveSmallIntegerField(
-        max_length=1,
         choices=SimNao,
         default=SimNao.NR
     )
@@ -275,17 +260,14 @@ class Propriedade(models.Model):
     abate_com_inspecao = models.BooleanField(default=False)
 
     aluga_pastos = models.PositiveSmallIntegerField(
-        max_length=1,
         choices=SimNao,
         default=SimNao.NR
     )
     pasto_comum = models.PositiveSmallIntegerField(
-        max_length=1,
         choices=SimNao,
         default=SimNao.NR
     )
     compartilha_itens = models.PositiveSmallIntegerField(
-        max_length=1,
         choices=SimNao,
         default=SimNao.NR
     )
@@ -293,24 +275,20 @@ class Propriedade(models.Model):
     compartilha_equipamentos = models.BooleanField(default=False)
     compartilha_funcionarios = models.BooleanField(default=False)
     acesso_areas_alagadas = models.PositiveSmallIntegerField(
-        max_length=1,
         choices=SimNao,
         default=SimNao.NR
     )
     gado_concentrado = models.PositiveSmallIntegerField(
-        max_length=1,
         choices=SimNao,
     )
     palafita = models.BooleanField(default=False)
     concentrado_outra = models.BooleanField(default=False)
     concentrado_outra_qual = models.TextField(blank=True, max_length=400)
     piquete_parto = models.SmallIntegerField(
-        max_length=1,
         choices=SimNao,
         default=SimNao.NR
     )
     entrega_leite = models.SmallIntegerField(
-        max_length=1,
         choices=SimNao,
         default=SimNao.NR
     )
@@ -318,66 +296,55 @@ class Propriedade(models.Model):
     entrega_laticinio = models.BooleanField(default=False)
     entrega_consumidor = models.BooleanField(default=False)
     resfria_leite = models.SmallIntegerField(
-        max_length=1,
         choices=SimNao,
         default=SimNao.NR
     )
     resfria_tanque_proprio = models.BooleanField(default=False)
     resfria_tanque_coletivo = models.BooleanField(default=False)
     entrega_leite_granel = models.SmallIntegerField(
-        max_length=1,
         choices=SimNao,
         default=SimNao.NR
     )
     produz_queijo_manteiga = models.SmallIntegerField(
-        max_length=1,
         choices=SimNao,
         default=SimNao.NR
     )
     queijo_manteiga_consumo_proprio = models.BooleanField(default=False)
     queijo_manteiga_venda = models.BooleanField(default=False)
     consome_leite_cru = models.SmallIntegerField(
-        max_length=1,
         choices=SimNao,
         default=SimNao.NR
     )
     assistencia_veterinaria = models.SmallIntegerField(
-        max_length=1,
         choices=SimNao,
     )
     veterinario_cooperativa = models.BooleanField(default=False)
     veterinario_privado = models.BooleanField(default=False)
     alimenta_soro_leite = models.SmallIntegerField(
-        max_length=1,
         choices=SimNao,
         default=SimNao.NR
     )
-    bov_bub_comprados_12meses = models.PositiveSmallIntegerField(max_length=6)
-    num_faz_comprados_12meses = models.PositiveSmallIntegerField(max_length=6)
-    bov_bub_vendidos_12meses = models.PositiveSmallIntegerField(max_length=6)
-    num_faz_vendidos_12meses = models.PositiveSmallIntegerField(max_length=6)
+    bov_bub_comprados_12meses = models.PositiveSmallIntegerField()
+    num_faz_comprados_12meses = models.PositiveSmallIntegerField()
+    bov_bub_vendidos_12meses = models.PositiveSmallIntegerField()
+    num_faz_vendidos_12meses = models.PositiveSmallIntegerField()
     compartilha_aguada = models.SmallIntegerField(
-        max_length=1,
         choices=SimNao,
         default=SimNao.NR
     )
     pouso_boiada_transito = models.SmallIntegerField(
-        max_length=1,
         choices=SimNao,
         default=SimNao.NR
     )
     vacina_brucelose_adeq_conservada = models.SmallIntegerField(
-        max_length=1,
         choices=SimNao,
         default=SimNao.NR
     )
     vacina_brucelose_adeq_aplicada = models.SmallIntegerField(
-        max_length=1,
         choices=SimNao,
         default=SimNao.NR
     )
     classificacao_propriedade = models.PositiveSmallIntegerField(
-        max_length=1,
         choices=Classificacao,
         default=Classificacao.NR
     )
