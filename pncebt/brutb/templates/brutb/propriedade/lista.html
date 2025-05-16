@@ -13,7 +13,12 @@
         {% for propriedade in propriedades %}
             <li>
                 {# Exibe informações do registro #}
-                <p><strong>ID do Registro:</strong> {{ propriedade.id }}</p> {# Opcional: mostrar o ID #}
+                <h2>
+                    <a href="{{ propriedade.get_absolute_url }}">
+                        {{ propriedade.cod_cadastro_defesa }}
+                    </a>
+                </h2>
+                <p><strong>ID do Registro:</strong> {{ propriedade.cod_rebanho_estudo }}</p> {# Opcional: mostrar o ID #}
                 <p><strong>Criado por:</strong> {{ propriedade.veterinario.get_full_name|default:propriedade.veterinario.username }}</p> {# Exibe o username do criador #}
                 <p><strong>Data/Hora de Criação:</strong> {{ propriedade.criado }}</p>
 

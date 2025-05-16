@@ -2,6 +2,7 @@ from django.contrib.gis.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.conf import settings
 from conta.models import Perfil
+from django.urls import reverse
 
 class Municipio(models.Model):
     # Regular Django fields corresponding to the attributes in the
@@ -24,99 +25,99 @@ class Municipio(models.Model):
 
 class Propriedade(models.Model):
     # Fields corresponding to the attributes in the questionary
-    class Exploracao(models.TextChoices):
-        NR = '0', 'Não respondeu'
-        CORTE = '1', 'Corte'
-        LEITE = '2', 'Leite'
-        MISTO = '3', 'Misto'
+    class Exploracao(models.IntegerChoices):
+        NR = 0, 'Não respondeu'
+        CORTE = 1, 'Corte'
+        LEITE = 2, 'Leite'
+        MISTO = 3, 'Misto'
 
-    class Criacao(models.TextChoices):
-        NR = '0', 'Não respondeu'
-        EXTENSIVO = '1', 'Extensivo'
-        SEMICONFINADO = '2', 'Semi-confinado'
-        CONFINADO = '3', 'Confinado'
+    class Criacao(models.IntegerChoices):
+        NR = 0, 'Não respondeu'
+        EXTENSIVO = 1, 'Extensivo'
+        SEMICONFINADO = 2, 'Semi-confinado'
+        CONFINADO = 3, 'Confinado'
 
-    class Ordenha(models.TextChoices):
-        NR = '0', 'Não respondeu'
-        ORDENHA_0 = '1', 'Não ordenha'
-        ORDENHA_1 = '2', '1 ordenha'
-        ORDENHA_2_3 = '3', '2 ou 3 ordenhas'
+    class Ordenha(models.IntegerChoices):
+        NR = 0, 'Não respondeu'
+        ORDENHA_0 = 1, 'Não ordenha'
+        ORDENHA_1 = 2, '1 ordenha'
+        ORDENHA_2_3 = 3, '2 ou 3 ordenhas'
 
-    class TipoOrdenha(models.TextChoices):
-        NR = '0', 'Não respondeu'
-        N_OREDENHA = '1', 'Não ordenha'
-        SALA = '2', 'Mecânica em sala de ordenha'
-        PE = '3', 'Mecânica ao pé'
-        MANUAL = '4', 'Manual'
+    class TipoOrdenha(models.IntegerChoices):
+        NR = 0, 'Não respondeu'
+        N_OREDENHA = 1, 'Não ordenha'
+        SALA = 2, 'Mecânica em sala de ordenha'
+        PE = 3, 'Mecânica ao pé'
+        MANUAL = 4, 'Manual'
 
-    class Inseminacao(models.TextChoices):
-        NR = '0', 'Não respondeu'
-        NUSA = '1', 'Não usa'
-        IA_TOURO = '2', 'Usa IA e touro'
-        IA = '3', 'Só IA'
+    class Inseminacao(models.IntegerChoices):
+        NR = 0, 'Não respondeu'
+        NUSA = 1, 'Não usa'
+        IA_TOURO = 2, 'Usa IA e touro'
+        IA = 3, 'Só IA'
 
-    class Bovino(models.TextChoices):
-        NR = '0', 'Não respondeu'
-        ZEBU = '1', 'Zebu'
-        EUROPEU_LEITE = '2', 'Europeu de leite'
-        EUROPEU_CORTE = '3', 'Europeu de corte'
-        MESTICO = '4', 'Mestiço'
-        OUTRA = '5', 'Outras raças'
-        NTEM = '6', 'Não tem'
+    class Bovino(models.IntegerChoices):
+        NR = 0, 'Não respondeu'
+        ZEBU = 1, 'Zebu'
+        EUROPEU_LEITE = 2, 'Europeu de leite'
+        EUROPEU_CORTE = 3, 'Europeu de corte'
+        MESTICO = 4, 'Mestiço'
+        OUTRA = 5, 'Outras raças'
+        NTEM = 6, 'Não tem'
 
-    class Bubalino(models.TextChoices):
-        NR = '0', 'Não respondeu'
-        MURRAH = '1', 'Murrah'
-        MEDITERRANEO = '2', 'Mediterrâneo'
-        CARABAO = '3', 'Carabao'
-        JAFFARABADI = '4', 'JAFFARABADI'
-        OUTRA = '5', 'Outras raças'
-        NTEM = '6', 'Não tem'
+    class Bubalino(models.IntegerChoices):
+        NR = 0, 'Não respondeu'
+        MURRAH = 1, 'Murrah'
+        MEDITERRANEO = 2, 'Mediterrâneo'
+        CARABAO = 3, 'Carabao'
+        JAFFARABADI = 4, 'JAFFARABADI'
+        OUTRA = 5, 'Outras raças'
+        NTEM = 6, 'Não tem'
 
-    class Aborto(models.TextChoices):
-        NAO = '0', 'Não'
-        SIM = '1', 'Sim'
-        NAO_SABE = '2', 'Não sabe'
-        NR = '3', 'Não respondeu'
+    class Aborto(models.IntegerChoices):
+        NAO = 0, 'Não'
+        SIM = 1, 'Sim'
+        NAO_SABE = 2, 'Não sabe'
+        NR = 3, 'Não respondeu'
 
-    class Feto(models.TextChoices):
-        ENTERRA = '0', 'Enterra, joga fossa ou queima'
-        ALIMENTA = '1', 'Alimenta porco ou cão'
-        NAO_FAZ_NADA = '2', 'Não faz nada'
-        NR = '3', 'Não respondeu'
+    class Feto(models.IntegerChoices):
+        ENTERRA = 0, 'Enterra, joga fossa ou queima'
+        ALIMENTA = 1, 'Alimenta porco ou cão'
+        NAO_FAZ_NADA = 2, 'Não faz nada'
+        NR = 3, 'Não respondeu'
 
-    class SimNao(models.TextChoices):
-        NAO = '0', 'Não'
-        SIM = '1', 'Sim'
-        NR = '3', 'Não respondeu/Não sabe'
+    class SimNao(models.IntegerChoices):
+        NAO = 0, 'Não'
+        SIM = 1, 'Sim'
+        NR = 2, 'Não respondeu/Não sabe'
 
-    class RegBru(models.TextChoices):
-        UMAVEZ = '0', 'Uma vez ao ano'
-        DUASVEZES = '1', 'Duas vezes ao ano'
-        COMPRA = '2', 'Quando compra'
-        ABORTA = '3', 'Quando há aborto na propriedade'
-        MOVIMENTACAO = '4', 'Quando exigido para movimentação/crédito'
-        NR = '5', 'Não respondeu'
+    class RegBru(models.IntegerChoices):
+        UMAVEZ = 0, 'Uma vez ao ano'
+        DUASVEZES = 1, 'Duas vezes ao ano'
+        COMPRA = 2, 'Quando compra'
+        ABORTA = 3, 'Quando há aborto na propriedade'
+        MOVIMENTACAO = 4, 'Quando exigido para movimentação/crédito'
+        NR = 5, 'Não respondeu'
 
-    class RegTB(models.TextChoices):
-        UMAVEZ = '0', 'Uma vez ao ano'
-        DUASVEZES = '1', 'Duas vezes ao ano'
-        COMPRA = '2', 'Quando compra'
-        MOVIMENTACAO = '3', 'Quando exigido para movimentação/crédito'
-        NR = '4', 'Não respondeu'
+    class RegTB(models.IntegerChoices):
+        UMAVEZ = 0, 'Uma vez ao ano'
+        DUASVEZES = 1, 'Duas vezes ao ano'
+        COMPRA = 2, 'Quando compra'
+        MOVIMENTACAO = 3, 'Quando exigido para movimentação/crédito'
+        NR = 4, 'Não respondeu'
 
-    class TipoVacina(models.TextChoices):
-        B19 = '0', 'Só com B19'
-        B19_RB51 = '1', 'Com B19 ou RB51'
-        RB51 = '2', 'Só com RB51'
-        NAO_SABE = '3', 'Não sabe a vacina'
+    class TipoVacina(models.IntegerChoices):
+        B19 = 0, 'Só com B19'
+        B19_RB51 = 1, 'Com B19 ou RB51'
+        RB51 = 2, 'Só com RB51'
+        NAO_SABE = 3, 'Não sabe a vacina'
 
-    class Classificacao(models.TextChoices):
-        RURAL = '0', 'Rural clássica'
-        ALDEIA = '1', 'Aldeia indígena'
-        ASSENTAMENTO = '2', 'Assentamento'
-        PERIFERIA = '3', 'Periferia urbana'
-        NR = '4', 'Não respondeu'
+    class Classificacao(models.IntegerChoices):
+        RURAL = 0, 'Rural clássica'
+        ALDEIA = 1, 'Aldeia indígena'
+        ASSENTAMENTO = 2, 'Assentamento'
+        PERIFERIA = 3, 'Periferia urbana'
+        NR = 4, 'Não respondeu'
 
     municipio = models.ForeignKey(Municipio, on_delete=models.PROTECT)
     regiao = models.PositiveSmallIntegerField()
@@ -127,7 +128,7 @@ class Propriedade(models.Model):
     data_inoculacao = models.DateField()
     data_leitura = models.DateField()
     cod_rebanho_estudo = models.PositiveBigIntegerField(
-        validators=[MinValueValidator(1100015001), MaxValueValidator(5300108500)], unique=True
+        validators=[MinValueValidator(1100015001), MaxValueValidator(5300108500)], unique=True, primary_key=True
     )
     latitude_grau = models.IntegerField(validators=[MinValueValidator(-33), MaxValueValidator(5)])
     latitude_min = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(59)])
@@ -280,6 +281,7 @@ class Propriedade(models.Model):
     )
     gado_concentrado = models.PositiveSmallIntegerField(
         choices=SimNao,
+        default=SimNao.NR
     )
     palafita = models.BooleanField(default=False)
     concentrado_outra = models.BooleanField(default=False)
@@ -317,6 +319,7 @@ class Propriedade(models.Model):
     )
     assistencia_veterinaria = models.SmallIntegerField(
         choices=SimNao,
+        default=SimNao.NR
     )
     veterinario_cooperativa = models.BooleanField(default=False)
     veterinario_privado = models.BooleanField(default=False)
@@ -353,7 +356,6 @@ class Propriedade(models.Model):
         on_delete=models.PROTECT,
         related_name='registros_propriedades'
     )
-    codigo_rebanho = models.CharField(max_length=10, primary_key=True)
     criado = models.DateTimeField(auto_now_add=True)
     atualizado = models.DateTimeField(auto_now=True)
 
@@ -363,6 +365,12 @@ class Propriedade(models.Model):
     #        models.Index(fields=['municipio']),
     #    ]
 
-    def __str__(self):
-        return self.codigo_rebanho
+    def get_absolute_url(self):
+        return reverse(
+            'brutb:propriedade_detalhe',
+            args=[self.cod_rebanho_estudo]
+        )
+
+    def __int__(self):
+        return self.cod_rebanho_estudo
 

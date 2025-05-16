@@ -1,6 +1,6 @@
 from django.contrib.gis import admin
 from .models import Municipio, Propriedade
-
+from django.contrib.admin import ShowFacets
 
 
 @admin.register(Propriedade)
@@ -12,7 +12,7 @@ class PropriedadeAdmin(admin.ModelAdmin):
     #raw_id_fields = ['municipio']
     date_hierarchy = 'atualizado'
     ordering = ['veterinario', 'atualizado']
-    #show_facets = admin.ShowFacets.ALWAYS
+    show_facets = ShowFacets.ALWAYS
 
     def get_queryset(self, request):
         # Obtém o QuerySet padrão (todos os objetos)
