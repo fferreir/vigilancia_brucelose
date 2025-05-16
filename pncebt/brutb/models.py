@@ -371,6 +371,6 @@ class Propriedade(models.Model):
             args=[self.cod_rebanho_estudo]
         )
 
-    def __int__(self):
-        return self.cod_rebanho_estudo
+    #def __int__(self):
+    #    return self.cod_rebanho_estudo
 

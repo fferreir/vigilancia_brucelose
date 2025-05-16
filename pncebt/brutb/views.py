@@ -28,8 +28,8 @@ def lista_propriedades(request):
     return render(request, 'brutb/propriedade/lista.html', {'propriedades': propriedades})
 
 @login_required
-def propriedade_detalhe(request, pk):
+def propriedade_detalhe(request, cod_rebanho_estudo):
     # Obtém uma propriedade específica
-    propriedade = get_object_or_404(Propriedade, pk=pk)
+    propriedade = get_object_or_404(Propriedade, cod_rebanho_estudo=cod_rebanho_estudo)
     return render(request, 'brutb/propriedade/detalhe.html', {'propriedade': propriedade})
 
