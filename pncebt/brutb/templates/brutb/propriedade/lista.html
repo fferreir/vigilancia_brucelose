@@ -7,17 +7,16 @@
 <h1>Registros {{ user.perfil.estado }} </h1>
 
 {% if propriedades %}
-    <p>Total de registros encontrados: {{ propriedades|length }}</p> {# Exibe a quantidade de registros #}
-
+    
     <ul> {# Usamos uma lista não ordenada para exibir os registros #}
         {% for propriedade in propriedades %}
             <li>
                 {# Exibe informações do registro #}
-                <h2>
+                <h3>
                     <a href="{{ propriedade.get_absolute_url }}">
                         {{ propriedade.cod_cadastro_defesa }}
                     </a>
-                </h2>
+                </h3>
                 <p><strong>ID do Registro:</strong> {{ propriedade.cod_rebanho_estudo }}</p> {# Opcional: mostrar o ID #}
                 <p><strong>Criado por:</strong> {{ propriedade.veterinario.get_full_name|default:propriedade.veterinario.username }}</p> {# Exibe o username do criador #}
                 <p><strong>Data/Hora de Criação:</strong> {{ propriedade.criado }}</p>
@@ -30,6 +29,7 @@
             </li>
         {% endfor %}
     </ul>
+    {% include 'brutb/paginacao.html' with page=propriedades %}
 
 {% else %}
     {# Mensagem exibida se a lista de registros estiver vazia #}

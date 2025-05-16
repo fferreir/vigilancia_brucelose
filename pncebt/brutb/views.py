@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.core.paginator import Paginator
 from .models import Propriedade
 
 @login_required
@@ -24,7 +24,11 @@ def propriedade(request):
 @login_required
 def lista_propriedades(request):
     # Obtém todas as propriedades
-    propriedades = Propriedade.objects.select_related('veterinario').filter(estado=request.user.perfil.estado)
+    propriedades_lista = Propriedade.objects.select_related('veterinario').filter(estado=request.user.perfil.estado)
+    # Paginador com 3 posts por página
+    paginator = Paginator(propriedades_lista, 3)
+    page_number = request.GET.get('page', 1)
+    propriedades = paginator.page(page_number)
     return render(request, 'brutb/propriedade/lista.html', {'propriedades': propriedades})
 
 @login_required

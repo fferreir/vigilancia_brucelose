@@ -29,5 +29,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('conta.urls')),
     path("conta/", include("conta.urls")),
-    path('brutb/', include('brutb.urls')),
+    path('brutb/', include('brutb.urls', namespace='brutb')),
 ]
