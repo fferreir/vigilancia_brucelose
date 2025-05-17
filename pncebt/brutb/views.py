@@ -19,7 +19,7 @@ def propriedade(request):
             form.save()
             return redirect('propriedade_adiciona')
     else:
-        form = Propriedade()
+        form = Cadastro_Propriedade()
 
     context = {
         'form': form

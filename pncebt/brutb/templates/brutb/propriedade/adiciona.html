@@ -1,9 +1,12 @@
 {% extends "brutb/base.html" %}
+{% load django_bootstrap5 %}
 {% block content %}
-    <h2>Adiciona propriedade</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Salvar">
-    </form>
+    <div class="container pt-5" style="width: 800px" >
+        <h2>Adiciona propriedade</h2>
+        <form method="post">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% bootstrap_button button_type="submit" content="Salvar" %} 
+        </form>
+    </div>
 {% endblock %}
