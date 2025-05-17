@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 from .models import Propriedade
+from .forms import Cadastro_Propriedade
 
 @login_required
 def home(request):
@@ -10,16 +11,21 @@ def home(request):
 
 @login_required
 def propriedade(request):
+
     if request.method == 'POST':
-        form = Propriedade(request.POST)
+        form = Cadastro_Propriedade(request.POST)
         if form.is_valid():
             # Processa os dados aqui
-            pass
+            form.save()
+            return redirect('propriedade_adiciona')
     else:
         form = Propriedade()
 
-    return render(request, 'brutb/propriedade.html', {'post': post,
-                                                      'form': form})
+    context = {
+        'form': form
+    }
+
+    return render(request, 'brutb/propriedade/adiciona.html', context=context)
 
 @login_required
 def lista_propriedades(request):
