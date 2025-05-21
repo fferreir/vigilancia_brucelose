@@ -1,8 +1,9 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 from .models import Propriedade
 from .forms import Cadastro_Propriedade
+from django.contrib import messages
 import datetime
 import openpyxl
 import io
@@ -23,7 +24,11 @@ def propriedade(request):
         if form.is_valid():
             # Processa os dados aqui
             form.save()
-            return redirect('propriedade_adiciona')
+            messages.success(
+                request,
+                'Propriedade cadastrada com sucesso!'
+            )
+            return redirect('brutb:propriedade_adiciona')
     else:
         form = Cadastro_Propriedade()
 
